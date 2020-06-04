@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Knockout CRUD";
+}
+
+<div class="jumbotron">
+    <h1>Elizabeth James | Code Example</h1>
+    <p class="lead">A simple web application which allows storing information about computer games</p>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("Go to Traditional CRUD", "Index", "ComputerGames")
+        @Html.AntiForgeryToken()
+        <p data-bind="if: !loaded">Loading Knockout...</p>
+        <div class="getData" style="display:none;" data-bind="if: loaded">
+            <p>
+                <button class="btn btn-primary create">Create</button>
+            </p>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th><th></th>
+                    <th>Release Date</th>
+                    <th>Rating</th>
+                    <th></th>
+                </tr>
+                <tbody data-bind="foreach: computerGameCollection">
+                    <tr data-bind="if: !Deleted()">
+                        <td><input type="text" data-bind="value: Name, enable: Editable" /></td>
+                        <td colspan="2"><textarea data-bind="value: Description, enable: Editable"></textarea></td>
+                        <td><input type="text" class="datepicker" data-bind="value: ReleaseDate, enable: Editable" /></td>
+                        <td><input type="text" data-bind="value: Rating, enable: Editable" /></td>
+                        <td>
+                            <input type="hidden" data-bind="value: Id" />
+                            <button class="btn btn-success edit" data-bind="text: Editable() ? 'Update' : 'Edit', click: Editable() ? Update : AllowEdit, enable: Errors().length == 0, attr: {errors:Errors().length}"></button>
+                            <button class="btn btn-danger delete" data-bind="text: Editable() ? 'Cancel' : 'Delete', click: Editable() ? StopEdit : Delete"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
