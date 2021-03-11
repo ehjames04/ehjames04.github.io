@@ -80,8 +80,8 @@
 <div class="jumbotron bg-dark text-white mb-0 vertical-center" style="display:none;">
     <div class="container">
         <p class="h1 mb-1">Puzzle #1</p>
-        <p class="mb-1">Question 1:</p>
-        <input type="text" data-correctanswer="answer" class="textbox" />
+        <p class="mb-1">Where in London would you find the clock to divide the kitchen from the dairy?</p>
+        <input type="text" data-correctanswer="NEWGATE" class="textbox" />
         <a class="btn btn-success mt-4"
            onclick="check($(this).siblings('.textbox'), $(this).parent().parent())">Submit</a>
     </div>
@@ -89,9 +89,81 @@
 <div class="jumbotron mb-0 vertical-center" style="display:none;">
     <div class="container">
         <p class="h1">Puzzle #2</p>
-        <p>Question 2:</p>
-        <input type="text" data-correctanswer="answer" class="textbox" />
+        <p>What's the middle name of the author who inspired your lego?</p>
+        <input type="text" data-correctanswer="K" class="textbox" />
         <a class="btn btn-success mt-4" onclick="check($(this).siblings('.textbox'),$(this).parent().parent())">Submit</a>
+    </div>
+</div>
+<div class="jumbotron bg-dark text-white mb-0 vertical-center" style="display:none;">
+    <div class="container">
+        <p class="h1 mb-1">Puzzle #3</p>
+        <p class="mb-1">Whose daffodils bring joy to the landing?</p>
+        <input type="text" data-correctanswer="Ann Mortimer" class="textbox" />
+        <a class="btn btn-success mt-4"
+           onclick="check($(this).siblings('.textbox'), $(this).parent().parent())">Submit</a>
+    </div>
+</div>
+<div class="jumbotron mb-0 vertical-center" style="display:none;">
+    <div class="container">
+        <p class="h1 mb-1">Puzzle #4</p>
+        <p class="mb-1">What's the Christan name of the character who dies in Little Women?</p>
+        <input type="text" data-correctanswer="Elizabeth" class="textbox" />
+        <a class="btn btn-success mt-4"
+           onclick="check($(this).siblings('.textbox'), $(this).parent().parent())">Submit</a>
+    </div>
+</div>
+<div class="jumbotron bg-dark text-white mb-0 vertical-center" style="display:none;">
+    <div class="container">
+        <p class="h1">Puzzle #5</p>
+        <p>Which television do you watch upstairs?</p>
+        <input type="text" data-correctanswer="SHARP" class="textbox" />
+        <a class="btn btn-success mt-4" onclick="check($(this).siblings('.textbox'),$(this).parent().parent())">Submit</a>
+    </div>
+</div>
+E
+<h1>NEXT</h1>
+<div class="jumbotron mb-0 vertical-center" style="display:none;">
+    <div class="container">
+        <p class="h1">Puzzle #2</p>
+        <p>Which walk is waiting to be named?</p>
+        <input type="text" data-correctanswer="GARIENSIS" class="textbox" />
+        <a class="btn btn-success mt-4" onclick="check($(this).siblings('.textbox'),$(this).parent().parent())">Submit</a>
+    </div>
+</div>
+AB
+<div class="jumbotron mb-0 vertical-center">
+    <div class="container">
+        <p class="clue h1 mb-1">Here are your clues:</p>
+        <div class="clue movable" style="display: none;">
+            <div>N</div>
+            <div>C</div>
+            <div>E</div>
+            <div>O</div>
+        </div>
+        <div class="clue movable" style="display: none;">
+            <div>K</div>
+            <div>A</div>
+            <div>H</div>
+            <div>M</div>
+        </div>
+        <div class="clue movable" style="display: none;">
+            <div>A</div>
+            <div>O</div>
+            <div>T</div>
+            <div>O</div>
+        </div>
+        <div class="clue movable" style="display: none;">
+            <div>S</div>
+            <div>-</div>
+            <div>B</div>
+            <div>R</div>
+        </div>
+        <div class="clue movable" style="display: none;">
+            <div>E</div>
+            <div>T</div>
+            <div>S</div>
+            <div>-</div>
+        </div>
     </div>
 </div>
 <div class="overlay" style="display:none;">
@@ -102,7 +174,6 @@
 <script>
     var showNext = function() {
         $visibleContainer = $(".jumbotron:visible")
-        console.log($visibleContainer);
         $nextContainer = $($visibleContainer).next();
         $($visibleContainer).hide();
         $($nextContainer).show();
@@ -114,9 +185,16 @@
         $(".overlay, .popup").show();
     }
 
+    var revealClue = function() {
+        $visibleClue = $('.clue:visible');
+        $nextClue = $($visibleClue).next();
+        $($nextClue).show();
+    }
+
     $(".overlay").on( "click", function() {
         if ($(this).hasClass("success")) {
             showNext();
+            revealClue();
         }
         hideMessage();
     })
