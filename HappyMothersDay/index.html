@@ -61,6 +61,19 @@
             vertical-align: initial;
         }
 
+        .clue {
+            display:block;
+        }
+
+        .clue.movable {
+            display: inline-block;
+        }
+
+        .clue.movable:hover {
+            cursor: pointer;
+            color: green;
+        }
+
         @media (max-width: 768px) {
             .h1 {
                 font-size: 6rem;
@@ -69,7 +82,7 @@
     </style>
 </head>
 <body class="text-center">
-<div class="jumbotron mb-0 vertical-center">
+<div class="jumbotron mb-0 vertical-center question-container">
     <div class="container">
         <p class="h1 mb-1">Hi Mamma! Happy Mother's Day!</p>
         <p class="mb-1">I've created an escape room for you</p>
@@ -77,7 +90,7 @@
         <a class="btn btn-success mt-4" onclick="showNext($(this).parent().parent())">Let's start!</a>
     </div>
 </div>
-<div class="jumbotron bg-dark text-white mb-0 vertical-center" style="display:none;">
+<div class="jumbotron bg-dark text-white mb-0 vertical-center question-container" style="display:none;">
     <div class="container">
         <p class="h1 mb-1">Puzzle #1</p>
         <p class="mb-1">Where in London would you find the clock to divide the kitchen from the dairy?</p>
@@ -86,15 +99,15 @@
            onclick="check($(this).siblings('.textbox'), $(this).parent().parent())">Submit</a>
     </div>
 </div>
-<div class="jumbotron mb-0 vertical-center" style="display:none;">
+<div class="jumbotron mb-0 vertical-center question-container" style="display:none;">
     <div class="container">
         <p class="h1">Puzzle #2</p>
-        <p>What's the middle name of the author who inspired your lego?</p>
+        <p>What's the middle initial of the author who inspired your lego?</p>
         <input type="text" data-correctanswer="K" class="textbox" />
         <a class="btn btn-success mt-4" onclick="check($(this).siblings('.textbox'),$(this).parent().parent())">Submit</a>
     </div>
 </div>
-<div class="jumbotron bg-dark text-white mb-0 vertical-center" style="display:none;">
+<div class="jumbotron bg-dark text-white mb-0 vertical-center question-container" style="display:none;">
     <div class="container">
         <p class="h1 mb-1">Puzzle #3</p>
         <p class="mb-1">Whose daffodils bring joy to the landing?</p>
@@ -103,7 +116,7 @@
            onclick="check($(this).siblings('.textbox'), $(this).parent().parent())">Submit</a>
     </div>
 </div>
-<div class="jumbotron mb-0 vertical-center" style="display:none;">
+<div class="jumbotron mb-0 vertical-center question-container" style="display:none;">
     <div class="container">
         <p class="h1 mb-1">Puzzle #4</p>
         <p class="mb-1">What's the Christan name of the character who dies in Little Women?</p>
@@ -112,25 +125,30 @@
            onclick="check($(this).siblings('.textbox'), $(this).parent().parent())">Submit</a>
     </div>
 </div>
-<div class="jumbotron bg-dark text-white mb-0 vertical-center" style="display:none;">
+<div class="jumbotron bg-dark text-white mb-0 vertical-center question-container" style="display:none;">
     <div class="container">
         <p class="h1">Puzzle #5</p>
-        <p>Which television do you watch upstairs?</p>
+        <p>Which brand of television do you watch upstairs?</p>
         <input type="text" data-correctanswer="SHARP" class="textbox" />
         <a class="btn btn-success mt-4" onclick="check($(this).siblings('.textbox'),$(this).parent().parent())">Submit</a>
     </div>
 </div>
-E
-<h1>NEXT</h1>
-<div class="jumbotron mb-0 vertical-center" style="display:none;">
+<div class="jumbotron mb-0 vertical-center question-container" style="display:none;">
     <div class="container">
-        <p class="h1">Puzzle #2</p>
+        <p class="h1">Puzzle #6</p>
         <p>Which walk is waiting to be named?</p>
         <input type="text" data-correctanswer="GARIENSIS" class="textbox" />
         <a class="btn btn-success mt-4" onclick="check($(this).siblings('.textbox'),$(this).parent().parent())">Submit</a>
     </div>
 </div>
-AB
+<div class="jumbotron bg-dark text-white mb-0 vertical-center question-container" style="display:none;">
+    <div class="container">
+        <p class="h1">Puzzle #7</p>
+        <p>What does your morning radio tell you to do?</p>
+        <input type="text" data-correctanswer="Listen to the world" class="textbox" />
+        <a class="btn btn-success mt-4" onclick="check($(this).siblings('.textbox'),$(this).parent().parent())">Submit</a>
+    </div>
+</div>
 <div class="jumbotron mb-0 vertical-center">
     <div class="container">
         <p class="clue h1 mb-1">Here are your clues:</p>
@@ -164,6 +182,12 @@ AB
             <div>S</div>
             <div>-</div>
         </div>
+        <div class="h2 clue" style="display:none;">p127</div>
+        <div class="clue h1" style="display:none;">
+            <span>Who's hiding in the Gardener's World magazine?</span>
+            <a class="btn btn-warning mt-4" onclick="getHint()">Hint</a>
+            <span class="hint"></span>
+        </div>
     </div>
 </div>
 <div class="overlay" style="display:none;">
@@ -171,9 +195,31 @@ AB
         <h1 class="popup-text"></h1>
     </div>
 </div>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+    $(".movable").draggable();
+
+    var hintCounter = 0;
+    var hints = [
+        'go find the magazine',
+        "it's in the spare room",
+        "it's on the bedside table",
+        "go to p127",
+        "what's the name of the animal?",
+        "can you use the animal name with this jumble of letters?",
+        "can you reorder the jumble of letters?",
+        "drag the columns of letters around",
+        "drag the columns of letters until the top row spells SNAKE",
+        "where is the spare coat in Beth's room?",
+        "it's in the bottom drawer of her cupboard"
+    ];
+    var getHint = function() {
+        $(".hint").text(hints[hintCounter]);
+        hintCounter++;
+    }
+
     var showNext = function() {
-        $visibleContainer = $(".jumbotron:visible")
+        $visibleContainer = $(".question-container:visible")
         $nextContainer = $($visibleContainer).next();
         $($visibleContainer).hide();
         $($nextContainer).show();
@@ -204,7 +250,7 @@ AB
         $(".overlay").removeClass("success").removeClass("error");
     }
 
-    var successMessage = "Hooray! Next puzzle...";
+    var successMessage = "Hooray! You earned a clue! Here's the next puzzle...";
     var errorMessage = "Oops! Try again..";
     var check = function($textbox) {
         $correctAnswer = $($textbox).data("correctanswer").toLowerCase().trim();
