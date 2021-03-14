@@ -155,71 +155,51 @@
 <div class="jumbotron mb-0 vertical-center">
     <div class="container">
         <p class="clue h1 mb-1">Here are your clues:</p>
-        <div class="clue movable" style="display: none;">
+        <div class="clue movable" data-clue="NCEO" style="display: none;">
             <div>N</div>
             <div>C</div>
             <div>E</div>
             <div>O</div>
         </div>
-        <div class="clue movable" style="display: none;">
+        <div class="clue movable" data-clue="KAHM" style="display: none;">
             <div>K</div>
             <div>A</div>
             <div>H</div>
             <div>M</div>
         </div>
-        <div class="clue movable" style="display: none;">
+        <div class="clue movable" data-clue="AOTO" style="display: none;">
             <div>A</div>
             <div>O</div>
             <div>T</div>
             <div>O</div>
         </div>
-        <div class="clue movable" style="display: none;">
+        <div class="clue movable" data-clue="S-BR" style="display: none;">
             <div>S</div>
             <div>-</div>
             <div>B</div>
             <div>R</div>
         </div>
-        <div class="clue movable" style="display: none;">
+        <div class="clue movable" data-clue="ETS-" style="display: none;">
             <div>E</div>
             <div>T</div>
             <div>S</div>
             <div>-</div>
         </div>
-        <div class="h2 clue" style="display:none;">p127</div>
+        <div class="h2 clue" data-clue="p127" style="display:none;">p127</div>
         <div class="clue h1" style="display:none;">
             <span>Who's hiding in the Gardener's World magazine?</span>
-            <a class="btn btn-warning mt-4" onclick="getHint()">Hint</a>
-            <span class="hint d-block h2"></span>
         </div>
     </div>
 </div>
 <div class="overlay" style="display:none;">
     <div class="popup" style="display:none;">
         <h1 class="popup-text"></h1>
+        <h1 class="clue-text"></h1>
     </div>
 </div>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
     $(".movable").draggable();
-
-    var hintCounter = 0;
-    var hints = [
-        'go find the magazine',
-        "it's in the spare room",
-        "it's on the bedside table",
-        "go to p127",
-        "what's the name of the animal?",
-        "can you use the animal name with this jumble of letters?",
-        "can you reorder the jumble of letters?",
-        "drag the columns of letters around",
-        "drag the columns of letters until the top row spells SNAKE",
-        "where is the spare coat in Beth's room?",
-        "it's in the bottom drawer of her cupboard"
-    ];
-    var getHint = function() {
-        $(".hint").text(hints[hintCounter]);
-        hintCounter++;
-    }
 
     var showNext = function() {
         $visibleContainer = $(".question-container:visible")
@@ -231,12 +211,22 @@
     var showMessage = function($message, $styledClass) {
         $(".overlay").addClass($styledClass);
         $(".popup-text").text($message);
+
+        if ($styledClass === 'success') {
+            $visibleClue = $('.clue:visible');
+            $numberOfVisibleClues = $visibleClue.length;
+            $nextClue = $($visibleClue[$numberOfVisibleClues - 1]).next();
+            $nextClueData = $($nextClue).data("clue");
+            $(".clue-text").text($nextClueData);
+        }
+
         $(".overlay, .popup").show();
     }
 
     var revealClue = function() {
         $visibleClue = $('.clue:visible');
-        $nextClue = $($visibleClue).next();
+        $numberOfVisibleClues = $visibleClue.length;
+        $nextClue = $($visibleClue[$numberOfVisibleClues - 1]).next();
         $($nextClue).show();
     }
 
@@ -253,7 +243,7 @@
         $(".overlay").removeClass("success").removeClass("error");
     }
 
-    var successMessage = "Hooray! You earned a clue! Here's the next puzzle...";
+    var successMessage = "Hooray! You earned a clue!";
     var errorMessage = "Oops! Try again..";
     var check = function($textbox) {
         $correctAnswer = $($textbox).data("correctanswer").toLowerCase().trim();
